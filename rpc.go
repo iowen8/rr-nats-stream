@@ -6,7 +6,7 @@ import (
 
 )
 
-type event struct {
+type rpc struct {
 	srv *Plugin
 	log logger.Logger
 }
@@ -14,7 +14,7 @@ type event struct {
 
 
 
-func (s *event) PublishEvent(subject string, data map[string]interface{}, output *SuccessResponse) error {
+func (s *rpc) PublishEvent(subject string, data map[string]interface{}, output *SuccessResponse) error {
 	msg := json.Marshall(data)
 	resp := srv.eventPublisher.PublishEvent(subject, msg)
 	*output = resp
@@ -39,7 +39,7 @@ func (p *Plugin) CollectTarget(name endure.Named, r Informer) error {
 	return PluginName
    }
    
-   // eventService returns associated event service.
-   func (p *Plugin) event() interface{} {
-	return &event{srv: p, log: p.log}
+   // eventService returns associated rpc service.
+   func (p *Plugin) RPC() interface{} {
+	return &rpc{srv: p, log: p.log}
    }
